@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>For My Love</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Georgia', serif;
+            background: linear-gradient(-45deg, #ff9a9e, #fecfef, #fecfef, #ffc3a0);
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            position: relative;
+        }
+
+        .floating-hearts {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .heart {
+            position: absolute;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 20px;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .heart:nth-child(odd) {
+            animation-delay: -2s;
+        }
+
+        .heart:nth-child(even) {
+            animation-delay: -4s;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateY(-100px) rotate(360deg); opacity: 0; }
+        }
+
+        .main-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            padding: 50px 20px;
+        }
+
+        .title {
+            font-size: 4rem;
+            color: white;
+            text-shadow: 2px 2px 10px rgba(0,0,0,0.3);
+            margin-bottom: 30px;
+            animation: fadeInUp 1s ease-out;
+        }
+
+        .subtitle {
+            font-size: 1.5rem;
+            color: white;
+            margin-bottom: 50px;
+            opacity: 0.9;
+            animation: fadeInUp 1s ease-out 0.5s both;
+        }
+
+        .music-player {
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 30px;
+            margin: 50px auto;
+            max-width: 600px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            animation: fadeInUp 1s ease-out 1s both;
+        }
+
+        .play-button {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            border: none;
+            background: linear-gradient(45deg, #ff6b6b, #ff8e8e);
+            color: white;
+            font-size: 2rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 20px;
+            box-shadow: 0 10px 30px rgba(255,107,107,0.4);
+        }
+
+        .play-button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 15px 40px rgba(255,107,107,0.6);
+        }
+
+        .message-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin: 50px 0;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(15px);
+            border-radius: 20px;
+            padding: 40px;
+            text-align: center;
+            transition: all 0.5s ease;
+            cursor: pointer;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            opacity: 0;
+            transform: translateY(50px);
+        }
+
+        .card.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .card:hover {
+            transform: translateY(-10px) scale(1.02);
+            background: rgba(255, 255, 255, 0.25);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+        }
+
+        .card h3 {
+            color: white;
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            text-shadow: 1px 1px 5px rgba(0,0,0,0.3);
+        }
+
+        .card p {
+            color: white;
+            font-size: 1.1rem;
+            line-height: 1.6;
+            opacity: 0.9;
+        }
+
+        .final-message {
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(20px);
+            border-radius: 30px;
+            padding: 60px;
+            margin: 80px auto;
+            max-width: 800px;
+            text-align: center;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.1);
+            opacity: 0;
+            transform: scale(0.9);
+            transition: all 1s ease;
+        }
+
+        .final-message.visible {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .final-message h2 {
+            color: white;
+            font-size: 2.5rem;
+            margin-bottom: 30px;
+            text-shadow: 2px 2px 10px rgba(0,0,0,0.3);
+        }
+
+        .final-message p {
+            color: white;
+            font-size: 1.3rem;
+            line-height: 1.8;
+            opacity: 0.95;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .sparkle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: white;
+            border-radius: 50%;
+            animation: sparkle 2s ease-in-out infinite;
+        }
+
+        @keyframes sparkle {
+            0%, 100% { opacity: 0; transform: scale(0); }
+            50% { opacity: 1; transform: scale(1); }
+        }
+
+        @media (max-width: 768px) {
+            .title { font-size: 2.5rem; }
+            .subtitle { font-size: 1.2rem; }
+            .card { padding: 30px; }
+            .final-message { padding: 40px; margin: 40px auto; }
+        }
+    </style>
+</head>
+<body>
+    <div class="floating-hearts"></div>
+    
+    <div class="container">
+        <div class="main-content">
+            <h1 class="title">For My Beautiful KUKKU JII</h1>
+            <p class="subtitle">A digital expression of my heart</p>
+
+            <div class="music-player">
+                <h3 style="color: white; margin-bottom: 20px;">Your Song</h3>
+                <button class="play-button" onclick="toggleMusic()">▶</button>
+                <p style="color: white; opacity: 0.8;">Click to play our special music</p>
+                <audio id="backgroundMusic" loop>
+                    <source src="your-music.mp3" type="audio/mpeg">
+                    <!-- Replace with your own music file -->
+                </audio>
+            </div>
+
+            <div class="message-cards">
+                <div class="card" data-delay="0">
+                    <h3>Every Morning</h3>
+                    <p>I wake up grateful for another day to love you. Your smile is the sunshine that brightens my world and fills my heart with endless joy.</p>
+                </div>
+                
+                <div class="card" data-delay="200">
+                    <h3>Your Laugh</h3>
+                    <p>The sound of your laughter is my favorite melody. It's the music that makes my soul dance and reminds me that happiness is real.</p>
+                </div>
+                
+                <div class="card" data-delay="400">
+                    <h3>In Your Eyes</h3>
+                    <p>I see my future, my dreams, and my home. Every glance we share writes a new chapter in our beautiful love story.</p>
+                </div>
+                
+                <div class="card" data-delay="600">
+                    <h3>Forever Promise</h3>
+                    <p>Through every season, every challenge, every beautiful moment - I choose you. Today, tomorrow, and all the days that follow.</p>
+                </div>
+                
+                <div class="card" data-delay="800">
+                    <h3>You Are</h3>
+                    <p>My best friend, my greatest love, my safe harbor. You are the answer to prayers I didn't even know I was praying.</p>
+                </div>
+                
+                <div class="card" data-delay="1000">
+                    <h3>Together</h3>
+                    <p>We create magic in the ordinary moments. Hand in hand, heart to heart, building a love that grows stronger every day.</p>
+                </div>
+            </div>
+
+            <div class="final-message">
+                <h2>I Love You</h2>
+                <p>Words feel too small to contain everything you mean to me. This website is just a tiny glimpse into the infinite love I carry for you in my heart. You are my everything, my always, my forever love.</p>
+                <p style="margin-top: 30px; font-style: italic;">With all my love, always ❤️</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Create floating hearts
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.innerHTML = '❤';
+            heart.className = 'heart';
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.animationDuration = (Math.random() * 3 + 3) + 's';
+            heart.style.fontSize = (Math.random() * 20 + 10) + 'px';
+            document.querySelector('.floating-hearts').appendChild(heart);
+            
+            setTimeout(() => {
+                heart.remove();
+            }, 6000);
+        }
+
+        // Create hearts periodically
+        setInterval(createHeart, 2000);
+
+        // Music player functionality
+        let isPlaying = false;
+        const music = document.getElementById('backgroundMusic');
+        const playButton = document.querySelector('.play-button');
+
+        function toggleMusic() {
+            if (isPlaying) {
+                music.pause();
+                playButton.innerHTML = '▶';
+            } else {
+                music.play().catch(e => {
+                    console.log('Autoplay prevented');
+                });
+                playButton.innerHTML = '⏸';
+            }
+            isPlaying = !isPlaying;
+        }
+
+        // Animate cards on scroll
+        function animateCards() {
+            const cards = document.querySelectorAll('.card');
+            const finalMessage = document.querySelector('.final-message');
+            
+            cards.forEach((card, index) => {
+                const delay = parseInt(card.dataset.delay) || 0;
+                setTimeout(() => {
+                    card.classList.add('visible');
+                }, delay);
+            });
+            
+            // Show final message after all cards
+            setTimeout(() => {
+                finalMessage.classList.add('visible');
+            }, 2000);
+        }
+
+        // Create sparkles
+        function createSparkle() {
+            const sparkle = document.createElement('div');
+            sparkle.className = 'sparkle';
+            sparkle.style.left = Math.random() * 100 + 'vw';
+            sparkle.style.top = Math.random() * 100 + 'vh';
+            sparkle.style.animationDelay = Math.random() * 2 + 's';
+            document.body.appendChild(sparkle);
+            
+            setTimeout(() => {
+                sparkle.remove();
+            }, 2000);
+        }
+
+        setInterval(createSparkle, 500);
+
+        // Initialize animations
+        window.addEventListener('load', () => {
+            setTimeout(animateCards, 1500);
+        });
+
+        // Add click effects to cards
+        document.querySelectorAll('.card').forEach(card => {
+            card.addEventListener('click', function() {
+                this.style.transform = 'scale(0.95)';
+                setTimeout(() => {
+                    this.style.transform = 'translateY(-10px) scale(1.02)';
+                }, 150);
+            });
+        });
+    </script>
+</body>
+</html>
